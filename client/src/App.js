@@ -20,8 +20,6 @@ const darkTheme = createTheme({
   },
 });
 
-const settings = ["Logout"];
-
 function App() {
   const [user, setUser] = useState(null);
 
@@ -37,6 +35,10 @@ function App() {
 
   const signIn = () => {
     window.open("http://localhost:5000/auth/google", "_self");
+  };
+
+  const logOut = () => {
+    window.open("http://localhost:5000/auth/logout", "_self");
   };
 
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -89,11 +91,11 @@ function App() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography onClick={logOut} textAlign="center">
+                    Logout
+                  </Typography>
+                </MenuItem>
               </Menu>
             </Box>
           ) : (

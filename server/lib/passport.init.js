@@ -16,10 +16,9 @@ passport.use(
       cb
     ) => {
       const user = await User.findOne({ googleId });
-      if (user) cb(null, user);
+      if (user) return cb(null, user);
       const newUser = await new User({ googleId, name, picture }).save();
-      if (newUser) cb(null, newUser);
-      // TODO: add else case
+      if (newUser) return cb(null, newUser);
     }
   )
 );

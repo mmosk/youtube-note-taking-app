@@ -4,7 +4,7 @@ import passport from "passport";
 const router = Router();
 
 router.get("/", ({ user }, res) => {
-  if (!user) return;
+  if (!user) return res.send(401);
   res.json({ user });
 });
 
@@ -17,5 +17,12 @@ router.get(
     failureRedirect: "/",
   })
 );
+
+router.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    res.redirect(process.env.ORIGIN);
+  });
+});
 
 export default router;
