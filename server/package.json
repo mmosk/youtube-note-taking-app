@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "nodemon ./src/index.js"
+    "start": "nodemon ./app.js"
   },
   "dependencies": {
     "connect-mongo": "^4.6.0",
