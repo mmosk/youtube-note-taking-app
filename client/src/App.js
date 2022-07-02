@@ -1,22 +1,18 @@
-import { CssBaseline } from "@mui/material";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { AuthProvider } from "./auth/useAuth";
+import { lazy } from "react";
+import { useAuth } from "./auth/useAuth";
 import Header from "./common/Header";
 
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+const AuthenticatedApp = lazy(() => import("./AuthenticatedApp"));
+const UnauthenticatedApp = lazy(() => import("./UnauthenticatedApp"));
 
 function App() {
+  const { user } = useAuth();
+
   return (
-    <AuthProvider>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <Header />
-      </ThemeProvider>
-    </AuthProvider>
+    <>
+      <Header />
+      {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+    </>
   );
 }
 
