@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
-import findOrCreatePlugin from "mongoose-findorcreate";
 
 const UserSchema = new mongoose.Schema({
-  id: {
+  googleId: {
     type: Number,
     required: true,
   },
@@ -10,8 +9,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  picture: {
+    type: String,
+    required: true,
+  },
 });
-
-UserSchema.plugin(findOrCreatePlugin);
 
 export default mongoose.model("User", UserSchema);

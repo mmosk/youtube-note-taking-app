@@ -9,18 +9,25 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
-    (accessToken, refreshToken, profile, cb) =>
-      User.findOrCreate(
-        { id: profile.id, name: profile.displayName },
-        (err, user) => cb(err, user)
-      )
+    async (
+      accessToken,
+      refreshToken,
+      { id: googleId, _json: { name, picture } },
+      cb
+    ) => {
+      const user = await User.findOne({ googleId });
+      if (user) cb(null, user);
+      const newUser = await new User({ googleId, name, picture }).save();
+      if (newUser) cb(null, newUser);
+      // TODO: add else case
+    }
   )
 );
 
 passport.serializeUser((user, cb) => cb(null, user.id));
 
 passport.deserializeUser((id, cb) => {
-  User.find({ id })
+  User.findOne({ id })
     .then((user) => cb(null, user))
     .catch(() => cb(new Error("Failed to deserialize an user")));
 });
