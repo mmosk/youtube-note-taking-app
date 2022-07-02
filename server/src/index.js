@@ -4,11 +4,18 @@ import cors from "cors";
 import session from "express-session";
 import passport from "passport";
 import { Strategy } from "passport-google-oauth20";
+import mongoose from "mongoose";
+import MongoStore from "connect-mongo";
+import User from "../user.js";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+const clientPromise = mongoose
+  .connect(process.env.MONGODB_URI)
+  .then((m) => m.connection.getClient());
 
 passport.use(
   new Strategy(
@@ -18,14 +25,19 @@ passport.use(
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     (accessToken, refreshToken, profile, cb) =>
-      cb({ id: profile.id, name: profile.displayName })
+      User.findOrCreate(
+        { id: profile.id, name: profile.displayName },
+        (err, user) => cb(err, user)
+      )
   )
 );
 
-passport.serializeUser((user, cb) =>
-  cb(null, { id: user.id, name: user.name })
-);
-passport.deserializeUser((user, cb) => cb(null, user));
+passport.serializeUser((user, cb) => cb(null, user.id));
+passport.deserializeUser((id, cb) => {
+  User.find({ id })
+    .then((user) => cb(null, user))
+    .catch(() => cb(new Error("Failed to deserialize an user")));
+});
 
 app.use(
   cors({
@@ -37,6 +49,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
+    store: MongoStore.create({ clientPromise }),
   })
 );
 app.use(passport.initialize());
@@ -49,8 +62,10 @@ app.get(
 
 app.get(
   "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/" }),
-  (req, res) => res.redirect("/")
+  passport.authenticate("google", {
+    successRedirect: "/",
+    failureRedirect: "/",
+  })
 );
 
 app.listen(PORT, () =>
