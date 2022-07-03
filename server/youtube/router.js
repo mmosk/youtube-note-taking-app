@@ -1,9 +1,11 @@
 import { Router } from "express";
+import { authCheck } from "../auth/middleware.js";
 import { youtube } from "./middleware.js";
 import { playlistMapper } from "./mappers.js";
 
 const router = Router();
 
+router.use(authCheck);
 router.use(youtube);
 
 router.get("/playlists", (req, res) => {
