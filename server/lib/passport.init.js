@@ -21,7 +21,6 @@ passport.use(
         googleId,
         name,
         picture,
-        // TODO: encrypt tokens
         accessToken,
         refreshToken,
       }).save();
