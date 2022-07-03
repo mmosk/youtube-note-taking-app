@@ -7,7 +7,7 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("http://localhost:5000/auth", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/auth`, {
         credentials: "include",
       });
       const { user } = await response.json();
@@ -16,11 +16,11 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const signIn = () => {
-    window.open("http://localhost:5000/auth/google", "_self");
+    window.open(`${process.env.REACT_APP_API_URL}/auth/google`, "_self");
   };
 
   const logOut = () => {
-    window.open("http://localhost:5000/auth/logout", "_self");
+    window.open(`${process.env.REACT_APP_API_URL}/auth/logout`, "_self");
   };
 
   return (

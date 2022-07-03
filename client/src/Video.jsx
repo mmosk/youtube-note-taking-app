@@ -13,13 +13,13 @@ const Video = () => {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        `http://localhost:5000/video/${youtubeVideoId}`,
+        `${process.env.REACT_APP_API_URL}/video/${youtubeVideoId}`,
         { credentials: "include" }
       );
       const video = await response.json();
       setVideo(video);
     })();
-  }, []);
+  }, [youtubeVideoId]);
 
   const formatTime = (time) => format(time * 1000, "mm:ss");
 
