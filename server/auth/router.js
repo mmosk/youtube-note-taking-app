@@ -8,12 +8,19 @@ router.get("/", ({ user }, res) => {
   res.json({ user });
 });
 
-router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "https://www.googleapis.com/auth/youtube.readonly"],
+    accessType: "offline",
+  })
+);
 
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: process.env.ORIGIN,
+    // successRedirect: process.env.ORIGIN,
+    successRedirect: "/",
     failureRedirect: "/",
   })
 );

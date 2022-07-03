@@ -17,7 +17,14 @@ passport.use(
     ) => {
       const user = await User.findOne({ googleId });
       if (user) return cb(null, user);
-      const newUser = await new User({ googleId, name, picture }).save();
+      const newUser = await new User({
+        googleId,
+        name,
+        picture,
+        // TODO: encrypt tokens
+        accessToken,
+        refreshToken,
+      }).save();
       if (newUser) return cb(null, newUser);
     }
   )

@@ -7,6 +7,7 @@ import MongoStore from "connect-mongo";
 import "./env.js";
 import "./lib/passport.init.js";
 import authRouter from "./auth/router.js";
+import youtubeRouter from "./youtube/router.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,6 +34,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/auth", authRouter);
+app.use("/youtube", youtubeRouter);
 
 app.listen(PORT, () =>
   console.log(`The server is up and running on PORT ${PORT}`)
