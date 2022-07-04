@@ -23,6 +23,7 @@ const Video = () => {
     (async () => {
       const response = await fetch(`/api/video/${youtubeVideoId}`);
       const video = await response.json();
+
       setVideo(video);
     })();
   }, [youtubeVideoId]);
@@ -32,39 +33,27 @@ const Video = () => {
 
     const note = { text: noteText, time: player.getCurrentTime() };
 
-    try {
-      // TODO: consider optimistic update
-      const response = await fetch(`/api/video/${youtubeVideoId}/note`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(note),
-      });
-      const video = await response.json();
-      setVideo(video);
-      setNoteText("");
-    } catch (err) {
-      alert(err);
-    }
+    // TODO: consider optimistic update
+    const response = await fetch(`/api/video/${youtubeVideoId}/note`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(note),
+    });
+    const video = await response.json();
+
+    setVideo(video);
+    setNoteText("");
   };
 
   const deleteNote = async (event, id) => {
     event.stopPropagation();
 
-    try {
-      const response = await fetch(`/api/video/${youtubeVideoId}/note/${id}`, {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-        },
-      });
-      const video = await response.json();
-      setVideo(video);
-    } catch (err) {
-      alert(err);
-    }
+    const response = await fetch(`/api/video/${youtubeVideoId}/note/${id}`, {
+      method: "DELETE",
+    });
+    const video = await response.json();
+
+    setVideo(video);
   };
 
   const formatTime = (time) => format(time * 1000, "mm:ss");

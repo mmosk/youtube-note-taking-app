@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/", ({ user }, res) => {
   if (!user) return res.send(401);
-  res.json({ user });
+  res.json(user);
 });
 
 router.get(

@@ -8,18 +8,14 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       const response = await fetch("/api/auth");
-      const { user } = await response.json();
+      const user = await response.json();
       setUser(user);
     })();
   }, []);
 
-  const signIn = () => {
-    window.open("/api/auth/google", "_self");
-  };
+  const signIn = () => window.open("/api/auth/google", "_self");
 
-  const logOut = () => {
-    window.open("/api/auth/logout", "_self");
-  };
+  const logOut = () => window.open("/api/auth/logout", "_self");
 
   return (
     <authContext.Provider value={{ user, signIn, logOut }}>
