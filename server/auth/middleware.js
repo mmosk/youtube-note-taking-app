@@ -1,4 +1,4 @@
 export const authCheck = (req, res, next) => {
-  if (req.user) return next();
+  if (req.isAuthenticated()) return next();
   res.sendStatus(401);
 };

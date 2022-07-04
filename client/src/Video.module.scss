@@ -12,3 +12,11 @@
     height: 100%;
   }
 }
+
+.deleteButton {
+  opacity: 0;
+
+  &Wrapper:hover & {
+    opacity: 1;
+  }
+}
