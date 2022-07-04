@@ -17,6 +17,7 @@ const clientPromise = mongoose
   .connect(process.env.MONGODB_URI)
   .then((m) => m.connection.getClient());
 
+app.use(express.json());
 app.use(
   cors({
     origin: process.env.ORIGIN,

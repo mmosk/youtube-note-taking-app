@@ -2,6 +2,17 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
+const NoteSchema = new Schema({
+  text: {
+    type: String,
+    required: true,
+  },
+  time: {
+    type: Number,
+    required: true,
+  },
+});
+
 const VideoSchema = new Schema({
   youtubeVideoId: {
     type: String,
@@ -11,14 +22,7 @@ const VideoSchema = new Schema({
     type: Schema.ObjectId,
     required: true,
   },
-  notes: [
-    {
-      text: { type: String, required: true },
-    },
-    {
-      time: { type: Number, required: true },
-    },
-  ],
+  notes: [NoteSchema],
 });
 
 export default mongoose.model("Video", VideoSchema);
