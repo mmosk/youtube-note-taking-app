@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Paper from "@mui/material/Paper";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import YouTube from "react-youtube";
 import { format } from "date-fns";
 import styles from "./Video.module.scss";
+import { Typography } from "@mui/material";
 
 const Video = () => {
   const { youtubeVideoId } = useParams();
@@ -75,14 +78,20 @@ const Video = () => {
           />
         </FormControl>
       </form>
-      <Box sx={{ pt: 2 }}>
+      <Stack spacing={1}>
         {video.notes &&
           video.notes.map(({ text, time }) => (
-            <div>
-              {formatTime(time)} {text}
-            </div>
+            <Paper
+              sx={{ display: "flex", p: 2 }}
+              onClick={() => player.seekTo(time)}
+            >
+              <Typography color="primary" sx={{ mr: 1 }}>
+                {formatTime(time)}
+              </Typography>{" "}
+              {text}
+            </Paper>
           ))}
-      </Box>
+      </Stack>
     </Container>
   );
 };
