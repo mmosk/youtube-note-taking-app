@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema({
   googleId: {
     type: Number,
     required: true,
@@ -20,6 +22,11 @@ const UserSchema = new mongoose.Schema({
   refreshToken: {
     type: String,
   },
+  watchLater: {
+    type: Schema.ObjectId,
+    required: true,
+  },
+  playlists: [Schema.ObjectId],
 });
 
 export default mongoose.model("User", UserSchema);

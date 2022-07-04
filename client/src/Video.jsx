@@ -59,7 +59,7 @@ const Video = () => {
   const formatTime = (time) => format(time * 1000, "mm:ss");
 
   return (
-    <Container maxWidth="md" sx={{ py: 3 }}>
+    <Container maxWidth="md">
       <div className={styles.youtubePlayerWrapper}>
         <YouTube
           className={styles.youtubePlayer}

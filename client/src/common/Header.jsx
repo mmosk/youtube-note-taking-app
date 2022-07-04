@@ -11,6 +11,8 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import { useAuth } from "../auth/useAuth";
 
+const drawerWidth = 240;
+
 function Header() {
   const { user, logOut } = useAuth();
 
@@ -25,7 +27,10 @@ function Header() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="fixed"
+      sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+    >
       <Toolbar>
         <IconButton
           size="large"
