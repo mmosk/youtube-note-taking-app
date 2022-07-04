@@ -1,19 +1,13 @@
 import { lazy } from "react";
 import { useAuth } from "./auth/useAuth";
-import Header from "./common/Header";
 
+const Login = lazy(() => import("./Login"));
 const AuthenticatedApp = lazy(() => import("./AuthenticatedApp"));
-const UnauthenticatedApp = lazy(() => import("./UnauthenticatedApp"));
 
 function App() {
   const { user } = useAuth();
 
-  return (
-    <>
-      <Header />
-      {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
-    </>
-  );
+  return user ? <AuthenticatedApp /> : <Login />;
 }
 
 export default App;

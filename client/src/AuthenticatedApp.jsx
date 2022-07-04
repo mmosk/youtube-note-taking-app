@@ -1,13 +1,15 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./common/Header";
 import Video from "./Video";
 
 const AuthenticatedApp = () => {
   return (
-    <BrowserRouter>
+    <Router>
+      <Header />
       <Routes>
         <Route path="video/:youtubeVideoId" element={<Video />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 };
 
