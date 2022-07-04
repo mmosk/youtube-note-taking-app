@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,13 +10,16 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import { useAuth } from "./auth/useAuth";
 import Header from "./common/Header";
+import Playlist from "./Playlist";
 import Video from "./Video";
 
 const drawerWidth = 240;
 
 const AuthenticatedApp = () => {
+  const { user } = useAuth();
+
   return (
     <Router>
       <Box sx={{ display: "flex" }}>
@@ -35,22 +39,26 @@ const AuthenticatedApp = () => {
           <Toolbar />
           <Divider />
           <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-              <ListItem key={text} disablePadding>
+            <ListItem disablePadding>
+              <Link to={`playlist/${user.watchLater}`}>
                 <ListItemButton>
                   <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    <InboxIcon />
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary="Watch Later" />
                 </ListItemButton>
-              </ListItem>
-            ))}
+              </Link>
+            </ListItem>
           </List>
+          <Divider />
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3, pt: 11 }}>
-          <Routes>
-            <Route path="video/:youtubeVideoId" element={<Video />} />
-          </Routes>
+          <Container maxWidth="md">
+            <Routes>
+              <Route path="playlist/:playlistId" element={<Playlist />} />
+              <Route path="video/:youtubeVideoId" element={<Video />} />
+            </Routes>
+          </Container>
         </Box>
       </Box>
     </Router>

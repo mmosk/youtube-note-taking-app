@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import FormControl from "@mui/material/FormControl";
@@ -59,7 +58,7 @@ const Video = () => {
   const formatTime = (time) => format(time * 1000, "mm:ss");
 
   return (
-    <Container maxWidth="md">
+    <>
       <div className={styles.youtubePlayerWrapper}>
         <YouTube
           className={styles.youtubePlayer}
@@ -102,7 +101,7 @@ const Video = () => {
             </Paper>
           ))}
       </Stack>
-    </Container>
+    </>
   );
 };
 
