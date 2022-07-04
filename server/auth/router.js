@@ -19,7 +19,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: process.env.ORIGIN,
+    successRedirect: "/",
     failureRedirect: "/",
   })
 );
@@ -27,7 +27,7 @@ router.get(
 router.get("/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) return next(err);
-    res.redirect(process.env.ORIGIN);
+    res.redirect("/");
   });
 });
 

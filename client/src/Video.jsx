@@ -21,10 +21,7 @@ const Video = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/video/${youtubeVideoId}`,
-        { credentials: "include" }
-      );
+      const response = await fetch(`/api/video/${youtubeVideoId}`);
       const video = await response.json();
       setVideo(video);
     })();
@@ -37,18 +34,14 @@ const Video = () => {
 
     try {
       // TODO: consider optimistic update
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/video/${youtubeVideoId}/note`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(note),
-        }
-      );
+      const response = await fetch(`/api/video/${youtubeVideoId}/note`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(note),
+      });
       const video = await response.json();
       setVideo(video);
       setNoteText("");
@@ -61,16 +54,12 @@ const Video = () => {
     event.stopPropagation();
 
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/video/${youtubeVideoId}/note/${id}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-          headers: {
-            Accept: "application/json",
-          },
-        }
-      );
+      const response = await fetch(`/api/video/${youtubeVideoId}/note/${id}`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+        },
+      });
       const video = await response.json();
       setVideo(video);
     } catch (err) {

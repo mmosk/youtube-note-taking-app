@@ -1,5 +1,4 @@
 import express from "express";
-import cors from "cors";
 import session from "express-session";
 import passport from "passport";
 import mongoose from "mongoose";
@@ -18,12 +17,6 @@ const clientPromise = mongoose
   .then((m) => m.connection.getClient());
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: process.env.ORIGIN,
-    credentials: true,
-  })
-);
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
