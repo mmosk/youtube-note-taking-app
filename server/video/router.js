@@ -41,4 +41,20 @@ router.post("/:youtubeVideoId/note", async (req, res) => {
   }
 });
 
+router.delete("/:youtubeVideoId/note/:noteId", async (req, res) => {
+  try {
+    const video = await Video.findOneAndUpdate(
+      {
+        user: req.user.id,
+        youtubeVideoId: req.params.youtubeVideoId,
+      },
+      { $pull: { notes: { _id: req.params.noteId } } },
+      { new: true }
+    ).exec();
+    res.json(video);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 export default router;

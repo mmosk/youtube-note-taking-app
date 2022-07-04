@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 import YouTube from "react-youtube";
 import { format } from "date-fns";
 import styles from "./Video.module.scss";
-import { Typography } from "@mui/material";
 
 const Video = () => {
   const { youtubeVideoId } = useParams();
@@ -56,6 +57,27 @@ const Video = () => {
     }
   };
 
+  const deleteNote = async (event, id) => {
+    event.stopPropagation();
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/video/${youtubeVideoId}/note/${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
+      const video = await response.json();
+      setVideo(video);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
   const formatTime = (time) => format(time * 1000, "mm:ss");
 
   return (
@@ -80,15 +102,25 @@ const Video = () => {
       </form>
       <Stack spacing={1}>
         {video.notes &&
-          video.notes.map(({ text, time }) => (
+          video.notes.map(({ time, text, _id }) => (
             <Paper
-              sx={{ display: "flex", p: 2 }}
+              key={_id}
+              className={styles.deleteButtonWrapper}
+              sx={{ display: "flex", alignItems: "center", p: 1 }}
               onClick={() => player.seekTo(time)}
             >
-              <Typography color="primary" sx={{ mr: 1 }}>
+              <Typography color="primary" sx={{ mx: 1 }}>
                 {formatTime(time)}
               </Typography>{" "}
               {text}
+              <IconButton
+                className={styles.deleteButton}
+                sx={{ ml: "auto" }}
+                size="small"
+                onClick={(event) => deleteNote(event, _id)}
+              >
+                <DeleteIcon fontSize="small" />
+              </IconButton>
             </Paper>
           ))}
       </Stack>
