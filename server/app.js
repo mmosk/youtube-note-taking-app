@@ -7,6 +7,7 @@ import "./env.js";
 import "./lib/passport.init.js";
 import authRouter from "./auth/router.js";
 import youtubeRouter from "./youtube/router.js";
+import playlistRouter from "./playlist/router.js";
 import videoRouter from "./video/router.js";
 
 const app = express();
@@ -30,6 +31,7 @@ app.use(passport.session());
 
 app.use("/auth", authRouter);
 app.use("/youtube", youtubeRouter);
+app.use("/playlist", playlistRouter);
 app.use("/video", videoRouter);
 
 app.listen(PORT, () =>

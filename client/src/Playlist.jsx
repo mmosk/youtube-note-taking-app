@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 
@@ -18,11 +18,11 @@ const Playlist = () => {
 
   return (
     <Stack spacing={1}>
-      {playlist.notes &&
-        playlist.notes.map(({ title, _id }) => (
-          <Paper key={_id} sx={{ p: 1 }}>
-            {title}
-          </Paper>
+      {playlist.videos &&
+        playlist.videos.map((id) => (
+          <Link to={`/video/${id}`}>
+            <Paper sx={{ p: 2 }}>{id}</Paper>
+          </Link>
         ))}
     </Stack>
   );

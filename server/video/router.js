@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { authCheck } from "../auth/middleware.js";
 import Video from "./video.model.js";
+import User from "../auth/user.model.js";
+import Playlist from "../playlist/playlist.model.js";
 
 const router = Router();
 
@@ -8,16 +10,23 @@ router.use(authCheck);
 
 router.get("/:youtubeVideoId", async (req, res) => {
   const youtubeVideoId = req.params.youtubeVideoId;
-  const user = req.user.id;
 
   try {
-    const video = await Video.findOne({ user, youtubeVideoId }).exec();
+    const video = await Video.findOne({
+      user: req.user.id,
+      youtubeVideoId,
+    }).exec();
     if (video) return res.json(video);
     const newVideo = await new Video({
       youtubeVideoId,
-      user,
+      user: req.user.id,
       notes: [],
     }).save();
+    const user = await User.findOne({ _id: req.user.id }).exec();
+    await Playlist.findOneAndUpdate(
+      { _id: user.watchLater },
+      { $push: { videos: newVideo.id } }
+    );
     res.json(newVideo);
   } catch (err) {
     res.status(500).json(err);

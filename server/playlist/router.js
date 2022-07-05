@@ -10,7 +10,7 @@ router.get("/:playlistId", async (req, res) => {
   const playlistId = req.params.playlistId;
 
   try {
-    const playlist = await Playlist.findOne({ playlistId }).exec();
+    const playlist = await Playlist.findOne({ _id: playlistId }).exec();
     res.json(playlist);
   } catch (err) {
     res.status(500).json(err);
