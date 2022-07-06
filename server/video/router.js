@@ -27,6 +27,11 @@ router.get("/:youtubeVideoId", async (req, res) => {
   res.json(newVideo);
 });
 
+router.delete("/:id", async (req, res) => {
+  await Video.findOneAndDelete({ _id: req.params.id }).exec();
+  res.end();
+});
+
 router.post("/:youtubeVideoId/note", async (req, res) => {
   // TODO: consider Document#save https://masteringjs.io/tutorials/mongoose/update
   const video = await Video.findOneAndUpdate(
