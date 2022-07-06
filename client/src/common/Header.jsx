@@ -9,8 +9,7 @@ import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import { useAuth } from "../auth/useAuth";
-
-const drawerWidth = 240;
+import { Link } from "react-router-dom";
 
 function Header() {
   const { user, logOut } = useAuth();
@@ -26,15 +25,12 @@ function Header() {
   };
 
   return (
-    <AppBar
-      position="fixed"
-      sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-    >
+    <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flex: 1 }}>
-          Video Title
+        <Typography variant="h6" component="div">
+          <Link to="/">YouTube Note Taking App</Link>
         </Typography>
-        <Box sx={{ flexGrow: 0 }}>
+        <Box sx={{ flexGrow: 0, ml: "auto" }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar alt={user.name} src={user.picture} />

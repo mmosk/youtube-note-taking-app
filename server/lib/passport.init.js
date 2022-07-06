@@ -1,7 +1,6 @@
 import passport from "passport";
 import { Strategy } from "passport-google-oauth20";
 import User from "../auth/user.model.js";
-import Playlist from "../playlist/playlist.model.js";
 
 passport.use(
   new Strategy(
@@ -20,15 +19,12 @@ passport.use(
 
       if (user) return cb(null, user);
 
-      const playlist = await new Playlist({ title: "Watch Later" }).save();
       const newUser = await new User({
         googleId,
         name,
         picture,
         accessToken,
         refreshToken,
-        watchLater: playlist.id,
-        playlists: [],
       }).save();
 
       cb(null, newUser);

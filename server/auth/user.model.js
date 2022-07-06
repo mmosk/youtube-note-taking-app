@@ -22,11 +22,6 @@ const UserSchema = new Schema({
   refreshToken: {
     type: String,
   },
-  watchLater: {
-    type: Schema.ObjectId,
-    required: true,
-  },
-  playlists: [Schema.ObjectId],
 });
 
 export default mongoose.model("User", UserSchema);
