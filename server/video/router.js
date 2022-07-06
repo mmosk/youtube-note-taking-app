@@ -6,55 +6,55 @@ const router = Router();
 
 router.use(authCheck);
 
+router.get("/", async (req, res) => {
+  const videos = await Video.find().exec();
+  res.json(videos);
+});
+
 router.get("/:youtubeVideoId", async (req, res) => {
   const youtubeVideoId = req.params.youtubeVideoId;
-  const user = req.user.id;
 
-  try {
-    const video = await Video.findOne({ user, youtubeVideoId }).exec();
-    if (video) return res.json(video);
-    const newVideo = await new Video({
-      youtubeVideoId,
-      user,
-      notes: [],
-    }).save();
-    res.json(newVideo);
-  } catch (err) {
-    res.status(500).json(err);
-  }
+  const video = await Video.findOne({
+    user: req.user.id,
+    youtubeVideoId,
+  }).exec();
+  if (video) return res.json(video);
+  const newVideo = await new Video({
+    youtubeVideoId,
+    user: req.user.id,
+    notes: [],
+  }).save();
+  res.json(newVideo);
+});
+
+router.delete("/:id", async (req, res) => {
+  await Video.findOneAndDelete({ _id: req.params.id }).exec();
+  res.end();
 });
 
 router.post("/:youtubeVideoId/note", async (req, res) => {
-  try {
-    // TODO: consider Document#save https://masteringjs.io/tutorials/mongoose/update
-    const video = await Video.findOneAndUpdate(
-      {
-        user: req.user.id,
-        youtubeVideoId: req.params.youtubeVideoId,
-      },
-      { $push: { notes: req.body } },
-      { new: true }
-    ).exec();
-    res.json(video);
-  } catch (err) {
-    res.status(500).json(err);
-  }
+  // TODO: consider Document#save https://masteringjs.io/tutorials/mongoose/update
+  const video = await Video.findOneAndUpdate(
+    {
+      user: req.user.id,
+      youtubeVideoId: req.params.youtubeVideoId,
+    },
+    { $push: { notes: req.body } },
+    { new: true }
+  ).exec();
+  res.json(video);
 });
 
 router.delete("/:youtubeVideoId/note/:noteId", async (req, res) => {
-  try {
-    const video = await Video.findOneAndUpdate(
-      {
-        user: req.user.id,
-        youtubeVideoId: req.params.youtubeVideoId,
-      },
-      { $pull: { notes: { _id: req.params.noteId } } },
-      { new: true }
-    ).exec();
-    res.json(video);
-  } catch (err) {
-    res.status(500).json(err);
-  }
+  const video = await Video.findOneAndUpdate(
+    {
+      user: req.user.id,
+      youtubeVideoId: req.params.youtubeVideoId,
+    },
+    { $pull: { notes: { _id: req.params.noteId } } },
+    { new: true }
+  ).exec();
+  res.json(video);
 });
 
 export default router;

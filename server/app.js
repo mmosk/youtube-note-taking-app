@@ -1,4 +1,5 @@
 import express from "express";
+import "express-async-errors";
 import session from "express-session";
 import passport from "passport";
 import mongoose from "mongoose";

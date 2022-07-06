@@ -16,7 +16,9 @@ passport.use(
       cb
     ) => {
       const user = await User.findOne({ googleId });
+
       if (user) return cb(null, user);
+
       const newUser = await new User({
         googleId,
         name,
@@ -24,7 +26,8 @@ passport.use(
         accessToken,
         refreshToken,
       }).save();
-      if (newUser) return cb(null, newUser);
+
+      cb(null, newUser);
     }
   )
 );

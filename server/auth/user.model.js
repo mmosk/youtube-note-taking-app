@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema({
   googleId: {
     type: Number,
     required: true,
